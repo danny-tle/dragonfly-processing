@@ -1,19 +1,18 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { cookies } from "next/headers";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
+import { AgeGate } from "@/components/age-gate";
+import { AGE_COOKIE } from "@/lib/age-gate";
 import "./globals.css";
 
-// Inter is the brand workhorse (Brand Guidelines 6.2–6.3).
-// It's a variable font, so every weight from Light to Bold ships in one file.
+
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
 });
 
-// IvyPresto Display (the italic accent face) is licensed through Adobe Fonts,
-// so it can't come from next/font/google. Until Dragonfly shares their Adobe
-// Fonts kit, --font-display in globals.css falls back to a system serif.
 
 export const metadata: Metadata = {
   title: "Dragonfly | Utah's Craft Cannabis",
@@ -21,13 +20,17 @@ export const metadata: Metadata = {
     "Utah's craft cannabis brand, built for the curious and the committed. Find Dragonfly at licensed medical cannabis pharmacies across Utah.",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default async function RootLayout({ children }: LayoutProps<"/">) {
+  // Reading a cookie here makes every page render per-request instead of at build time.
+  const ageVerified = (await cookies()).get(AGE_COOKIE)?.value === "1";
+
   return (
     <html lang="en" className={`${inter.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col">
         <SiteHeader />
         <main className="flex-1">{children}</main>
         <SiteFooter />
+        {!ageVerified && <AgeGate />}
       </body>
     </html>
   );
