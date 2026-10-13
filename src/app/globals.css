@@ -13,6 +13,11 @@
   /* 4.2 Strain types. Use only to tag sativa / indica / hybrid products. */
   --color-sativa: #bf9b15;
   --color-indica: #be0067;
+  /* Hybrid tab on packaging (4.7) reads as a pale sage; not in the official palette yet. */
+  --color-hybrid: #9fae9f;
+
+  /* 4.3 Gold foil (swatch 106-1), approximated for screens. Packaging wordmark only. */
+  --color-foil: #d6b64a;
 
   /* 4.4 Experience palette: light → deep pairs. Never mix experiences in one layout. */
   --color-milk: #fef8f0;

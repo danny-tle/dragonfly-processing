@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { confirmAge } from "@/app/actions";
 
 export function AgeGate() {
@@ -14,7 +13,6 @@ export function AgeGate() {
     >
       <div className="w-full max-w-md rounded-2xl bg-background p-10 text-center text-foreground shadow-xl">
         <p className="text-2xl font-medium text-primary">Dragonfly</p>
-       : 
           <>
             <h2 id="age-gate-title" className="mt-8 text-2xl font-semibold">
               Are you 21 or older?
