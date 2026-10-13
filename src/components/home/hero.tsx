@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { featuredProducts } from "@/data/home";
-import { ProductBox } from "@/components/product-box";
+import { PodCarousel } from "./pod-carousel";
 
 export function Hero() {
   return (
@@ -15,16 +15,9 @@ export function Hero() {
         Find our products at licensed medical cannabis pharmacies across the state.
       </p>
 
-      <ul className="mt-16 flex w-full flex-wrap items-end justify-center gap-6 sm:gap-10 lg:justify-between lg:gap-0 lg:px-[4%]">
-        {featuredProducts.map((product, index) => (
-          <li
-            key={product.strain}
-            className={index % 2 === 1 ? "sm:-translate-y-4" : undefined}
-          >
-            <ProductBox {...product} />
-          </li>
-        ))}
-      </ul>
+      <div className="mt-8 w-full">
+        <PodCarousel products={featuredProducts} />
+      </div>
 
       <Link
         href="/where-to-buy"
