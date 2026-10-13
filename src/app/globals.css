@@ -1,26 +1,60 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/*
+ * Dragonfly design tokens, from Brand Guidelines v1.0 (Aug 2026).
+ */
+@theme {
+  /* 4.2 Core palette */
+  --color-linen: #fffef8;
+  --color-sage: #5f7562;
+  --color-ink: #212121;
+  --color-white: #f7f5f3;
+
+  /* 4.2 Strain types. Use only to tag sativa / indica / hybrid products. */
+  --color-sativa: #bf9b15;
+  --color-indica: #be0067;
+
+  /* 4.4 Experience palette: light → deep pairs. Never mix experiences in one layout. */
+  --color-milk: #fef8f0;
+  --color-brown: #403536;
+  --color-sleep-light: #b3b1d4;
+  --color-sleep-deep: #8162a2;
+  --color-balance-light: #f2c898;
+  --color-balance-deep: #d78488;
+  --color-active-light: #bcd6a3;
+  --color-active-deep: #f0ae68;
+  --color-calm-light: #7ccad5;
+  --color-calm-deep: #9c97c2;
+  --color-recovery-light: #e18f88;
+  --color-recovery-deep: #bd6478;
+  --color-soothe-light: #edb460;
+  --color-soothe-deep: #e06e47;
+  --color-align: #96d4f5;
+
+  /* 6.0 Typography */
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: "ivypresto-display", ui-serif, Georgia, serif;
+  --tracking-brand: -0.02em; /* "Tracking -2%" on headings and body copy */
 }
 
+/*
+ * Semantic roles: what each color *means* on the site.
+ * Components should use these (bg-background, text-primary…) instead of raw
+ * palette names.
+ */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+ --color-background: var(--color-linen); /* page base */
+  --color-surface: var(--color-white); /* cards and panels on linen */
+  --color-foreground: var(--color-ink); /* body text and headings */
+  --color-muted: color-mix(in srgb, var(--color-ink) 60%, transparent); /* addresses, captions */
+  --color-border: color-mix(in srgb, var(--color-ink) 12%, transparent); /* dividers, card outlines */
+  --color-primary: var(--color-sage); /* buttons, links, header */
+  --color-on-primary: var(--color-linen);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
+  letter-spacing: var(--tracking-brand);
 }
