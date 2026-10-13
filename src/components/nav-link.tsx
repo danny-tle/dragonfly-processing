@@ -11,8 +11,8 @@ type NavLinkProps = {
 export function NavLink({ href, children }: NavLinkProps) {
   const pathname = usePathname();
 
-  // TODO(human): decide when this link counts as "active"
-  const isActive = false;
+  const isActive =
+  href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(`${href}/`);
 
   return (
     <Link
