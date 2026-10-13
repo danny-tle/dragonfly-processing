@@ -21,7 +21,6 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({ children }: LayoutProps<"/">) {
-  // Reading a cookie here makes every page render per-request instead of at build time.
   const ageVerified = (await cookies()).get(AGE_COOKIE)?.value === "1";
 
   return (
