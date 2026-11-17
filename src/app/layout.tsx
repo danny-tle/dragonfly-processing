@@ -24,8 +24,10 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
   const ageVerified = (await cookies()).get(AGE_COOKIE)?.value === "1";
 
   return (
-    <html lang="en" className={`${inter.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col">
+    // Browser extensions (Grammarly and others) add attributes to <html> and <body> before
+    // React loads; suppressHydrationWarning ignores attribute mismatches on these two only.
+    <html lang="en" className={`${inter.variable} h-full antialiased`} suppressHydrationWarning>
+      <body className="min-h-full flex flex-col" suppressHydrationWarning>
         <SiteHeader />
         <main className="flex-1">{children}</main>
         <SiteFooter />
