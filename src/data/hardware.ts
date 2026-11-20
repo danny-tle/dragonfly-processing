@@ -40,6 +40,8 @@ export type Callout = {
  * manual fill the gap. All values are fractions of the front frame.
  */
 export type ExplodedView = {
+  /** Unique per view; one device can have several (e.g. held still, then taken apart). */
+  id: string;
   device: string;
   /** Seam to split the frame along, left to right. Without one the device moves as a single piece. */
   seam?: [number, number][];
@@ -78,6 +80,8 @@ export type HardwareChapter = {
   comparison?: HardwareComparisonRow[];
   /** Stops the spin on this device's front and takes it apart while the chapter is on screen. */
   explode?: ExplodedView;
+  /** Short feature list under the body copy. */
+  features?: { title: string; body: string }[];
   legend?: PodLegendRow[];
 };
 
@@ -108,7 +112,7 @@ export const devices: Device[] = [
   {
     slug: "novaa",
     name: "Novaa",
-    kind: "Pod battery",
+    kind: "Pod vaporizer",
     video: "/assets/nova-spin.mp4",
     poster: "/assets/nova-poster.jpg",
   },
@@ -121,9 +125,23 @@ export const devices: Device[] = [
   },
 ];
 
-// Novaa content is from the Novaa 3 user manual and how-to card (source-assets/*Novaa*.pdf).
+// Holds Ember still, facing front, without taking it apart: a view with nothing moved.
+const emberHold: ExplodedView = {
+  id: "ember-hold",
+  device: "ember",
+  capLift: 0,
+  bodyDrop: 0,
+  shrink: 0,
+  shift: 0,
+  inserts: [],
+  callouts: [],
+};
+
+// Novaa content is from the Novaa 3 user manual and how-to card (source-assets/*Novaa*.pdf)
+// and the Novaa support page in the "Dragonfly Website" Figma.
 // The pod drawing is rendered from the manual's line art.
 const novaaInsert: ExplodedView = {
+  id: "novaa-insert",
   device: "novaa",
   capLift: 0,
   bodyDrop: 0.22,
@@ -145,7 +163,7 @@ const novaaInsert: ExplodedView = {
       u: 0.56,
       v: 0.18,
       side: "right",
-      detail: "Novaa reads the pod and sets the ideal temperature for what's inside. The light color tells you which oil it detected.",
+      detail: "Novaa reads the pod and sets the ideal temperature for what's inside. The light color tells you which oil it detected. Works with Dragonfly and Betty pods only; 510-thread carts won't fit.",
       image: "/assets/novaa-parts/novaa-pod.png",
     },
     {
@@ -188,14 +206,16 @@ const novaaInsert: ExplodedView = {
       v: 0.832,
       side: "right",
       spec: "USB-C",
-      detail: "The light times your draw and shows which pod type was detected. While charging over USB-C, solid white means fully charged.",
+      detail: "The light times your draw and shows which pod type was detected. A charge lasts a full day of moderate use; while charging over USB-C, solid white means fully charged.",
     },
   ],
 };
 
-// Ember content is from the Ember user manual (source-assets/EmberUserManual.pdf).
+// Ember content is from the Ember user manual (source-assets/EmberUserManual.pdf)
+// and the Ember support page in the "Dragonfly Website" Figma.
 // Seam and points are traced on the first frame of the Ember spin, which shows the button side on the left.
 const emberExploded: ExplodedView = {
+  id: "ember-apart",
   device: "ember",
   seam: [
     [0.253, 0.331],
@@ -236,7 +256,7 @@ const emberExploded: ExplodedView = {
       v: 0.275,
       side: "left",
       spec: "0.3 g oven",
-      detail: "Load it with ground flower. The oven holds up to 0.3 g.",
+      detail: "Holds about 0.3 g of ground flower. Tamp it gently with the included packing tool; a medium grind works best.",
       image: "/assets/ember-parts/ember-heating-chamber.png",
     },
     {
@@ -254,7 +274,7 @@ const emberExploded: ExplodedView = {
       v: 0.48,
       side: "left",
       spec: "298–446 °F",
-      detail: "Shows the battery level and your set temperature at a glance.",
+      detail: "Shows the battery level and your set temperature in real time, and Ember remembers your last setting when you power back on.",
     },
     {
       label: "Control buttons",
@@ -262,7 +282,7 @@ const emberExploded: ExplodedView = {
       u: 0.25,
       v: 0.68,
       side: "left",
-      detail: "Click any button five times to power on, then step the temperature up or down. Ember vibrates twice when it's ready.",
+      detail: "Press ▲ or ▼ five times within 2 seconds to power on or off. Tap to adjust 1° at a time, or hold to scroll. Ember heats up in about 20 seconds and vibrates when it's ready.",
     },
     {
       label: "Battery",
@@ -271,7 +291,7 @@ const emberExploded: ExplodedView = {
       v: 0.56,
       side: "right",
       spec: "2000 mAh",
-      detail: "Good for 18–20 sessions per charge.",
+      detail: "A 2000 mAh Li-ion battery, good for 18–20 sessions per charge.",
     },
     {
       label: "USB-C port",
@@ -280,7 +300,7 @@ const emberExploded: ExplodedView = {
       v: 0.875,
       side: "right",
       spec: "USB-C",
-      detail: "Charges over USB-C from the base of the device.",
+      detail: "Charges from the base in about 2.5 hours. Use only the included cable.",
       image: "/assets/ember-parts/ember-type-c-port.png",
     },
   ],
@@ -297,14 +317,13 @@ export const hardwareChapters: HardwareChapter[] = [
     label: "Form",
     title: "Nothing extra.",
     accent: "Nothing missing.",
-    body: "Novaa has no buttons at all: inhale gently and auto-draw does the rest. Ember is rounded and soft-edged, made to rest easily in your palm.",
+    body: "Novaa has no buttons at all: inhale gently and auto-draw does the rest. Ember is rounded and soft-edged, with a premium aluminum alloy body made to rest easily in your palm.",
   },
   {
     label: "Insert",
     title: "Insert",
     accent: "and go.",
-    // The manual says any Dragonfly or Betty pod; confirm whether to mention Betty.
-    body: "Click a Dragonfly pod into Novaa's magnetic cradle. It buzzes and lights up to confirm the pod is detected and ready.",
+    body: "Click a Dragonfly or Betty pod into Novaa's magnetic cradle. It buzzes and lights up to confirm the pod is detected and ready.",
     explode: novaaInsert,
   },
   {
@@ -320,6 +339,32 @@ export const hardwareChapters: HardwareChapter[] = [
     ],
   },
   {
+    // Copy from the Ember product page design (Dragonfly Wellness).
+    label: "Flower",
+    title: "Taste your",
+    accent: "flower.",
+    body: "Ember is a premium dry herb vaporizer that offers a clean, efficient, and combustion-free way to enjoy cannabis.",
+    explode: emberHold,
+    features: [
+      {
+        title: "Pure Cannabis Relief",
+        body: "Clean, combustion-free sessions with smooth, flavorful vapor, made for medical cannabis patients.",
+      },
+      {
+        title: "Precision Temperature Control",
+        body: "Dial in settings from 298°F to 446°F for personalized relief and terpene activation.",
+      },
+      {
+        title: "Simple & Patient-Friendly",
+        body: "Easy to load, easy to use. Haptic feedback and intuitive controls make every session stress-free.",
+      },
+      {
+        title: "Portable & Rechargeable",
+        body: "Compact, discreet, and ready for anywhere, with up to 20 sessions per charge over USB-C.",
+      },
+    ],
+  },
+  {
     label: "Inside",
     title: "Take Ember",
     accent: "apart.",
@@ -332,12 +377,12 @@ export const hardwareChapters: HardwareChapter[] = [
     accent: "that fits you.",
     body: "Both come in matte black, carry the Dragonfly mark and charge over USB-C.",
     comparison: [
-      { label: "Type", values: { novaa: "Pod battery", ember: "Dry herb vaporizer" } },
-      { label: "Activation", values: { novaa: "Auto-draw, no buttons", ember: "Two control buttons" } },
+      { label: "Type", values: { novaa: "Pod vaporizer", ember: "Dry herb vaporizer" } },
+      { label: "Activation", values: { novaa: "Auto-draw, no buttons", ember: "5-click power on" } },
       { label: "Heating", values: { novaa: "Ceramic core", ember: "Glazed stainless chamber" } },
-      { label: "Temperature", values: { novaa: "Set by pod, 2 levels", ember: "298–446 °F" } },
+      { label: "Temperature", values: { novaa: "Set by pod, 2 levels", ember: "298–446 °F, ~20 s heat-up" } },
       { label: "Feedback", values: { novaa: "Haptic + status light", ember: "OLED screen" } },
-      { label: "Battery", values: { novaa: "TBD", ember: "2000 mAh" } },
+      { label: "Battery", values: { novaa: "Full day of use", ember: "2000 mAh, 18–20 sessions" } },
       { label: "Size", values: { novaa: "TBD", ember: "105 × 45 × 24 mm" } },
       { label: "Weight", values: { novaa: "TBD", ember: "115.8 g" } },
     ],

@@ -101,13 +101,13 @@ export function HardwareStory({ devices, chapters }: { devices: Device[]; chapte
   // Set once the held device first squares up; from then on it tracks scrolling exactly.
   const squaredRef = useRef(false);
   const explodeRef = useRef(0);
-  // Compared by device slug: the chapter data is re-sent from the server on refresh,
+  // Compared by view id: the chapter data is re-sent from the server on refresh,
   // so the same view can arrive as a new object.
-  const apartDeviceRef = useRef<string | null>(null);
+  const apartViewIdRef = useRef<string | null>(null);
 
   const [active, setActive] = useState(0);
   const [onStage, setOnStage] = useState(0);
-  const [apartDevice, setApartDevice] = useState<string | null>(null);
+  const [apartViewId, setApartViewId] = useState<string | null>(null);
 
   // Parts picked or pointed at in an exploded view, shared by its hotspots and its parts list.
   type PartRef = { device: string; index: number };
@@ -251,7 +251,7 @@ export function HardwareStory({ devices, chapters }: { devices: Device[]; chapte
         const facingFront = squaredRef.current;
 
         // Moving straight to a different exploded chapter closes this one first.
-        const wanted = requested !== null && requested.device === heldViewRef.current?.device;
+        const wanted = requested !== null && requested.id === heldViewRef.current?.id;
         // Same view, possibly re-sent as a new object: draw from the latest copy.
         if (wanted) heldViewRef.current = requested;
         explodeRef.current = ease(explodeRef.current, wanted && facingFront ? 1 : 0, elapsed, EXPLODE_EASE_MS);
@@ -261,10 +261,10 @@ export function HardwareStory({ devices, chapters }: { devices: Device[]; chapte
           squaredRef.current = false;
         }
 
-        const nowApart = explodeRef.current > 0.95 ? (heldViewRef.current?.device ?? null) : null;
-        if (nowApart !== apartDeviceRef.current) {
-          apartDeviceRef.current = nowApart;
-          setApartDevice(nowApart);
+        const nowApart = explodeRef.current > 0.95 ? (heldViewRef.current?.id ?? null) : null;
+        if (nowApart !== apartViewIdRef.current) {
+          apartViewIdRef.current = nowApart;
+          setApartViewId(nowApart);
         }
       } else if (target !== null) {
         const remaining = target - spinRef.current;
@@ -409,9 +409,9 @@ export function HardwareStory({ devices, chapters }: { devices: Device[]; chapte
             <div ref={frameBoxRef} className="absolute">
               {explodeViews.map((view) => (
                 <ExplodedOverlay
-                  key={view.device}
+                  key={view.id}
                   view={view}
-                  visible={apartDevice === view.device}
+                  visible={apartViewId === view.id}
                   selected={partIn(selectedPart, view)}
                   hovered={partIn(hoveredPart, view)}
                   onSelect={(index) => selectPart(view, index)}
@@ -496,7 +496,31 @@ export function HardwareStory({ devices, chapters }: { devices: Device[]; chapte
 
                   <p className="mt-5 max-w-md text-muted md:mt-6 md:text-lg">{chapter.body}</p>
 
-                  {chapter.explode && (
+                  {chapter.features && (
+                    <ul className="mt-6 grid max-w-xl gap-x-8 gap-y-4 sm:grid-cols-2 md:mt-8">
+                      {chapter.features.map((feature) => (
+                        <li key={feature.title} className="flex gap-3">
+                          <svg
+                            viewBox="0 0 20 20"
+                            aria-hidden="true"
+                            className="mt-0.5 size-5 shrink-0 text-primary"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth={1.5}
+                          >
+                            <circle cx="10" cy="10" r="8.5" />
+                            <path d="m6.5 10.2 2.3 2.3 4.7-4.9" strokeLinecap="round" strokeLinejoin="round" />
+                          </svg>
+                          <div>
+                            <p className="text-sm font-semibold">{feature.title}</p>
+                            <p className="mt-1 text-sm text-muted">{feature.body}</p>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+
+                  {chapter.explode && chapter.explode.callouts.length > 0 && (
                     <PartsPanel
                       view={chapter.explode}
                       deviceName={devices.find((device) => device.slug === chapter.explode?.device)?.name ?? ""}
@@ -585,10 +609,16 @@ export function HardwareStory({ devices, chapters }: { devices: Device[]; chapte
                       >
                         Find a pharmacy
                       </Link>
+                      <Link
+                        href="/support"
+                        className="rounded-full border border-foreground px-6 py-3 text-sm font-medium transition-colors hover:bg-foreground hover:text-background"
+                      >
+                        Manuals &amp; FAQs
+                      </Link>
                       <button
                         type="button"
                         onClick={() => scrollToChapter(0)}
-                        className="rounded-full border border-foreground px-6 py-3 text-sm font-medium transition-colors hover:bg-foreground hover:text-background"
+                        className="px-2 py-3 text-sm font-medium text-muted underline-offset-4 hover:text-foreground hover:underline"
                       >
                         Replay
                       </button>
