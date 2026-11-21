@@ -65,6 +65,8 @@ export type ExplodedInsert = {
   height: number;
   /** Photo close-ups float as discs; line art and cut-outs float as they are. */
   shape?: "disc";
+  /** A product render (already cut out) rather than line art, so it keeps its own tones. */
+  render?: boolean;
   /** Where the part lives on the device; a dashed line runs back to it. */
   from?: { u: number; v: number; part: Callout["part"] };
 };
@@ -147,7 +149,7 @@ const novaaInsert: ExplodedView = {
   bodyDrop: 0.22,
   shrink: 0.1,
   shift: -0.08,
-  inserts: [{ image: "/assets/novaa-parts/novaa-pod.png", u: 0.502, v: 0.204, height: 0.28 }],
+  inserts: [{ image: "/assets/novaa-parts/novaa-pod-render.png", u: 0.502, v: 0.2, height: 0.24, render: true }],
   callouts: [
     {
       label: "Auto-draw",
@@ -164,7 +166,7 @@ const novaaInsert: ExplodedView = {
       v: 0.18,
       side: "right",
       detail: "Novaa reads the pod and sets the ideal temperature for what's inside. The light color tells you which oil it detected. Works with Dragonfly and Betty pods only; 510-thread carts won't fit.",
-      image: "/assets/novaa-parts/novaa-pod.png",
+      image: "/assets/novaa-parts/novaa-pod-render.png",
     },
     {
       label: "Ceramic core heating",

@@ -196,7 +196,9 @@ export function ExplodedOverlay({ view, visible, selected, hovered, onSelect, on
                     ? `aspect-square rounded-full object-cover shadow-[0_12px_24px_-10px_rgb(33_33_33/0.6)] ring-1 transition-shadow ${
                         isSelected ? "ring-4 ring-primary/40" : "ring-foreground/10"
                       }`
-                    : "brightness-75"
+                    : insert.render
+                      ? ""
+                      : "brightness-75"
                 }`}
               />
             </span>
