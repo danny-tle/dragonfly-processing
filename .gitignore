@@ -45,3 +45,13 @@ next-env.d.ts
 
 # Claude Code personal settings
 .claude/settings.local.json
+
+# Kept locally only: the GitHub repo is public.
+# Supplier production sheets (factory contact details, internal sign-offs)
+/source-assets/docs/Dragonfly_Ember_Instruction_Pamphlet.pdf
+/source-assets/docs/Dragonfly_Ember_Technical_Specifications-Final-ce.pdf
+# Unreleased Figma design exports
+/source-assets/designs/
+
+# design source files
+*.ai
