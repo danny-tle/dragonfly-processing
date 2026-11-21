@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { NavLink } from "./nav-link";
 
@@ -12,7 +13,6 @@ const navItems = [
 
 export function SiteHeader() {
   return (
-
     <header className="sticky top-0 z-40 bg-background/95 backdrop-blur-sm">
       <div className="flex flex-col items-center gap-4 px-6 py-6 md:grid md:grid-cols-[1fr_auto_1fr] md:gap-8 md:px-12">
         <nav aria-label="Main" className="order-2 md:order-none">
@@ -25,9 +25,8 @@ export function SiteHeader() {
           </ul>
         </nav>
 
-        {/* Placeholder until assets are granted */}
-        <Link href="/" className="order-1 text-3xl font-medium text-primary md:order-none">
-          Dragonfly
+        <Link href="/" className="order-1 md:order-none">
+          <Image src="/brand/dragonfly-logo-sage.svg" alt="Dragonfly" width={1390} height={474} priority className="h-10 w-auto md:h-12" />
         </Link>
 
         <div className="hidden justify-end md:flex">

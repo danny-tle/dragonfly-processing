@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 export function SiteFooter() {
@@ -5,7 +6,7 @@ export function SiteFooter() {
     <footer className="bg-primary text-on-primary">
       <div className="mx-auto flex max-w-6xl flex-col gap-8 px-6 py-12 sm:flex-row sm:justify-between">
         <div className="max-w-sm space-y-3">
-          <p className="text-2xl font-medium">Dragonfly</p>
+          <Image src="/brand/dragonfly-logo-linen.svg" alt="Dragonfly" width={1390} height={474} className="h-11 w-auto" />
           <p className="text-sm opacity-80">
             Utah&apos;s craft cannabis brand, built for the curious and the committed.
           </p>
