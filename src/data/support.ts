@@ -26,7 +26,11 @@ export type SupportDevice = {
   /** Headline line under the device name, from the product banner design. */
   tagline: string;
   /** Tall lifestyle photo beside the title (night canyon for Novaa, mountains for Ember). */
+  /** Brand wordmark used as the page title. */
+  wordmark: { image: string; width: number; height: number };
   hero: { image: string; width: number; height: number };
+  /** Wide banner photo for the manuals index, with its baked-in text removed. */
+  banner: string;
   manual: SupportResource;
   howTo: SupportResource;
   quickTips: { icon: QuickTipIcon; title: string; body: string }[];
@@ -34,7 +38,7 @@ export type SupportDevice = {
    * Labelled line drawing of the device taken apart. Each part's `x`/`y` is where its
    * leader line starts, as fractions of the drawing.
    */
-  /** Photo set from the product page design: one large shot, then smaller detail shots. */
+  /** One large photo, then two or four smaller ones beside it. */
   gallery?: { image: string; width: number; height: number; alt: string }[];
   diagram?: { image: string; width: number; height: number; parts: { label: string; x: number; y: number }[] };
   podDetection?: { light: string; color: string; pod: string }[];
@@ -51,8 +55,15 @@ export const supportDevices: SupportDevice[] = [
     name: "Novaa",
     summary: "Pod-based vaporizer with Smart Pod Detection.",
     image: "/assets/nova-poster.jpg",
-    tagline: "A vape battery system with Smart Pod Detection™.",
+    tagline: "A Vape Battery System with Smart Pod Detection™",
+    wordmark: { image: "/brand/novaa-wordmark.svg", width: 1868, height: 223 },
     hero: { image: "/support/novaa-night-sky.jpg", width: 534, height: 801 },
+    gallery: [
+      { image: "/support/novaa-box.jpg", width: 1200, height: 1463, alt: "Novaa vape battery system box" },
+      { image: "/support/novaa-pod-super-boof.jpg", width: 1200, height: 732, alt: "Dragonfly Super Boof live rosin pod box, compatible with Novaa 3" },
+      { image: "/support/novaa-pod-wasatch-frost.jpg", width: 1200, height: 732, alt: "Dragonfly Wasatch Frost live rosin pod box, compatible with Novaa 3" },
+    ],
+    banner: "/support/novaa-banner.jpg",
     manual: {
       title: "Novaa User Manual",
       image: "/support/novaa-manual.jpg",
@@ -149,11 +160,13 @@ export const supportDevices: SupportDevice[] = [
     name: "Ember",
     summary: "Dry herb vaporizer with precision temp controls.",
     image: "/assets/ember-poster.jpg",
-    tagline: "A flower vaporizer with precision temp controls up to 446°F. Taste the difference.",
+    tagline: "A Flower Vaporizer with precision temp controls up to 446°F – Taste the difference.",
+    wordmark: { image: "/brand/ember-wordmark.svg", width: 1071, height: 253 },
     hero: { image: "/support/ember-mountains.jpg", width: 640, height: 790 },
+    banner: "/support/ember-banner.jpg",
     gallery: [
       { image: "/support/ember-selenite.jpg", width: 1434, height: 1749, alt: "Ember beside its box and a selenite tower" },
-      { image: "/support/ember-box.jpg", width: 712, height: 872, alt: "Ember flower vaporizer box" },
+      { image: "/support/ember-box-photo.jpg", width: 1068, height: 1302, alt: "Ember flower vaporizer box" },
       { image: "/support/ember-mouthpiece.jpg", width: 712, height: 872, alt: "Hand holding the Ember mouthpiece end" },
       { image: "/support/ember-chamber.jpg", width: 712, height: 872, alt: "Ember with the magnetic mouthpiece lifted off the heating chamber" },
       { image: "/support/ember-flower.jpg", width: 712, height: 872, alt: "Cannabis flower" },

@@ -38,7 +38,16 @@ export default async function DeviceSupportPage(props: PageProps<"/support/[devi
         <div className="mt-6 grid items-center gap-10 md:grid-cols-[1fr_minmax(0,22rem)] lg:gap-16">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Support</p>
-            <h1 className="mt-3 text-6xl font-medium tracking-[-0.045em] sm:text-8xl">{device.name}</h1>
+            <h1 className="mt-5">
+              <Image
+                src={device.wordmark.image}
+                alt={device.name}
+                width={device.wordmark.width}
+                height={device.wordmark.height}
+                priority
+                className="h-10 w-auto max-w-full sm:h-12"
+              />
+            </h1>
             <p className="mt-5 max-w-lg text-xl leading-snug sm:text-2xl">{device.tagline}</p>
             <p className="mt-4 max-w-md text-muted">
               Have questions about {device.name}? Find guides, quick tips and answers below.
@@ -71,7 +80,7 @@ export default async function DeviceSupportPage(props: PageProps<"/support/[devi
 
       {device.gallery && (
         <section aria-label={`${device.name} photos`} className="mx-auto mt-8 max-w-6xl px-6 md:px-12">
-          {/* Detail shots in a 2×2 block beside one large photo, as in the product page design. */}
+          {/* Smaller shots in a block beside one large photo, as in the product page design. With three photos the two small ones stack as wide tiles. */}
           <ul className="grid grid-cols-2 gap-2 md:grid-cols-4 md:grid-rows-2">
             {device.gallery.map((photo, index) => (
               <li
@@ -79,7 +88,7 @@ export default async function DeviceSupportPage(props: PageProps<"/support/[devi
                 className={
                   index === 0
                     ? "col-span-2 overflow-hidden rounded-xl md:col-start-3 md:row-span-2 md:row-start-1"
-                    : "overflow-hidden rounded-xl"
+                    : `overflow-hidden rounded-xl ${device.gallery!.length === 3 ? "col-span-2 sm:col-span-1 md:col-span-2" : ""}`
                 }
               >
                 <Image
@@ -87,7 +96,7 @@ export default async function DeviceSupportPage(props: PageProps<"/support/[devi
                   alt={photo.alt}
                   width={photo.width}
                   height={photo.height}
-                  sizes={index === 0 ? "(min-width: 768px) 36rem, 100vw" : "(min-width: 768px) 18rem, 50vw"}
+                  sizes={index === 0 || device.gallery!.length === 3 ? "(min-width: 768px) 36rem, 100vw" : "(min-width: 768px) 18rem, 50vw"}
                   className="size-full object-cover"
                 />
               </li>
